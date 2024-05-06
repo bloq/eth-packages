@@ -1,0 +1,37 @@
+{
+  "name": "eth-rpc-cache",
+  "version": "0.0.1",
+  "description": "A simple cache for Ethereum RPC requests",
+  "keywords": [
+    "cache",
+    "eth",
+    "rpc"
+  ],
+  "bugs": "https://github.com/bloq/eth-packages/issues",
+  "license": "MIT",
+  "author": {
+    "name": "Gonzalo D'Elia",
+    "email": "gonzalo@bloq.com"
+  },
+  "dependencies": {
+    "debug": "4.3.4",
+    "json-stable-stringify": "1.0.1",
+    "promise-mem": "1.0.2"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "repository": "bloq/eth-packages",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "tsc",
+    "test": "mocha -r ts-node/register --loader=ts-node/esm --es-module-specifier-resolution=node"
+  },
+  "devDependencies": {
+    "@types/debug": "4.1.12",
+    "@types/json-stable-stringify": "1.0.36",
+    "ts-node": "10.9.2",
+    "typescript": "5.4.5"
+  },
+  "type": "module"
+}
