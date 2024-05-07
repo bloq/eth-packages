@@ -4,8 +4,8 @@ import sinon from 'sinon'
 
 chai.use(chaiAsPromised).should()
 
-import { errors } from '../error'
-import { createEthRpcCache } from '../index'
+import { errors } from '../src/error'
+import { createEthRpcCache } from '../src/index'
 
 const getJsonResponse = result =>
   Promise.resolve({
