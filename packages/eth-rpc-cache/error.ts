@@ -14,9 +14,6 @@ export class JsonRpcError extends Error {
 
 export const errors = {
   internalServerError: (err: Error) =>
-    new JsonRpcError(
-      err?.message && err.message !== '' ? err.message : 'Internal error',
-      -32603
-    ),
+    new JsonRpcError(err?.message || 'Internal error', -32603),
   methodNotFound: () => new JsonRpcError('Method not found', -32601)
 }
