@@ -43,6 +43,7 @@
           "*.spec.js"
         ],
         "extends": [
+          "bloq/mocha",
           "prettier"
         ],
         "globals": {
@@ -50,6 +51,9 @@
           "before": "readonly",
           "describe": "readonly",
           "it": "readonly"
+        },
+        "rules": {
+          "node/no-unpublished-require": "off"
         }
       }
     ],
