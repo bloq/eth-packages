@@ -1,5 +1,5 @@
 {
-  "name": "eth-rpc-cache",
+  "name": "@bloq/eth-rpc-cache",
   "version": "0.0.1",
   "description": "A simple cache for Ethereum RPC requests",
   "keywords": [
