@@ -1,6 +1,6 @@
 {
   "name": "eth-rpc-cache",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple cache for Ethereum RPC requests",
   "keywords": [
     "cache",
@@ -38,5 +38,6 @@
     "ts-node": "10.9.2",
     "typescript": "5.4.5"
   },
-  "type": "module"
+  "type": "module",
+  "types": "dist/index.d.ts"
 }
