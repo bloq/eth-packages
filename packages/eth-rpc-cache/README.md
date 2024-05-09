@@ -27,13 +27,13 @@ const cachedProvider = {
 Object.setPrototypeOf(cachedProvider, Object.getPrototypeOf(cachedProvider))
 
 // Will call the RPC endpoint and retrieve the chainId
-await provider.send('eth_chainId', [])
+await cachedProvider.send('eth_chainId', [])
 // Will retrieve the value from the cache, and while the instance is alive, it will permanently be cached
-await provider.send('eth_chainId', [])
+await cachedProvider.send('eth_chainId', [])
 // Will call the RPC endpoint and retrieve the current number
-await provider.send('eth_blockNumber', [])
+await cachedProvider.send('eth_blockNumber', [])
 // This value will be cached for ~half block, so if requested again before that time passes, it will come from the cache
-await provider.send('eth_blockNumber', [])
+await cachedProvider.send('eth_blockNumber', [])
 ```
 
 ## API
