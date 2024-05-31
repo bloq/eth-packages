@@ -10,11 +10,9 @@ export type JsonRpcCallFn = (
 ) => Promise<JsonRpcResult>
 
 export type Strategy = {
-  getRpc: (
-    rpc: JsonRpcCallFn,
-    cache: Map<string, unknown>,
-    options?: Record<string, unknown>
-  ) => JsonRpcCallFn
+  maxAge?: number
   methods: string[]
   name: string
+  // For a given rpc call, return the strategy name which will be used to cache the result
+  resolver?: (method: string, params: unknown[]) => string | undefined
 }

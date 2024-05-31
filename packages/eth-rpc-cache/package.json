@@ -36,7 +36,8 @@
     "@types/debug": "4.1.12",
     "@types/json-stable-stringify": "1.0.36",
     "ts-node": "10.9.2",
-    "typescript": "5.4.5"
+    "typescript": "5.4.5",
+    "viem": "2.13.2"
   },
   "type": "module",
   "types": "dist/index.d.ts"
