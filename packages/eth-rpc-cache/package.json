@@ -1,6 +1,6 @@
 {
   "name": "eth-rpc-cache",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A simple cache for Ethereum RPC requests extensible with different caching strategies",
   "keywords": [
     "cache",
