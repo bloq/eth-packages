@@ -1,11 +1,14 @@
 import * as chai from 'chai'
 import chaiAsPromised from 'chai-as-promised'
 import sinon from 'sinon'
+import { keccak256 } from 'viem'
 
 chai.use(chaiAsPromised).should()
 
 import { errors } from '../src/error'
 import { createEthRpcCache } from '../src/index'
+import { perBlockStrategy } from '../src/strategies/per-block'
+import { permanentStrategy } from '../src/strategies/permanent'
 
 const getJsonResponse = result =>
   Promise.resolve({
@@ -52,8 +55,14 @@ describe('Ethereum RPC Cache', function () {
   })
 
   it('should call through a strategy', async function () {
-    const testMethod = 'eth_chainId'
-    const testParams = []
+    const testMethod = 'eth_call'
+    const testParams = [
+      {
+        data: '0xa25ae55700000000000000000000000000000000000000000000000000000000000016ed',
+        to: '0x'
+      },
+      'latest'
+    ]
     const testResult = '0x1'
     const mockRpc = function (method, params) {
       method.should.equal(testMethod)
@@ -61,17 +70,31 @@ describe('Ethereum RPC Cache', function () {
       return getJsonResponse(testResult)
     }
     const spied = sinon.spy(mockRpc)
-    const testStrategy = {
-      getRpc(rpc) {
-        rpc.should.equal(mockRpc)
-        return spied
-      },
+
+    const indexed = [
+      { method: 'decimals()', policy: 'permanent' },
+      { method: 'getL2Output(uint256)', policy: 'block' }
+    ]
+      .map(({ method, policy }) => ({
+        [keccak256(method).slice(0, 10)]: policy
+      }))
+      .reduce((a, b) => ({ ...a, ...b }), {})
+
+    const ethCallStrategy = {
       methods: [testMethod],
-      name: 'test-strategy'
+      name: 'eth-call-strategy',
+      resolver(_, params) {
+        const signature = params[0].data.slice(0, 10)
+        return indexed[signature]
+      }
     }
 
-    const ethRpc = createEthRpcCache(mockRpc, { strategies: [testStrategy] })
+    const ethRpc = createEthRpcCache(spied, {
+      strategies: [perBlockStrategy, permanentStrategy, ethCallStrategy]
+    })
     const response = await ethRpc(testMethod, testParams)
+    // call again to ensure the cached version was used
+    await ethRpc(testMethod, testParams)
 
     response.should.eql({
       id: 1,

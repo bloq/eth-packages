@@ -1,9 +1,4 @@
-import pMemoize from 'promise-mem'
-
-import { type JsonRpcCallFn, type Strategy } from '../types'
-import { getKey } from '../utils/cache-key'
-
-const name = 'permanent'
+import { type Strategy } from '../types'
 
 // These methods can be safely cached once the result is obtained.
 const methods = [
@@ -20,19 +15,8 @@ const methods = [
   'web3_sha3' // This one could be calculated here instead of calling the node.
 ]
 
-const getRpc = (
-  rpc: JsonRpcCallFn,
-  cache: Map<string, unknown>,
-  options = {}
-) =>
-  pMemoize(rpc, {
-    cache,
-    resolver: (method: string, params: unknown[]) => getKey(method, params),
-    ...options
-  })
-
 export const permanentStrategy: Strategy = {
-  getRpc,
+  maxAge: Infinity,
   methods,
-  name
+  name: 'permanent'
 }

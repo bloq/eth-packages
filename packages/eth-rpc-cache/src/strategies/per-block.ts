@@ -1,9 +1,4 @@
-import pMemoize from 'promise-mem'
-
-import { type JsonRpcCallFn, type Strategy } from '../types'
-import { getKey } from '../utils/cache-key'
-
-const name = 'perBlock'
+import { type Strategy } from '../types'
 
 // These methods could be permanently cached if executed i.e. on an old block.
 // For newer blocks, the results could change in the case of a [deep] reorg.
@@ -35,20 +30,8 @@ const perBlockMethods = [
 
 const methods = [...mayBeSafeMethods, ...perBlockMethods]
 
-const getRpc = (
-  rpc: JsonRpcCallFn,
-  cache: Map<string, unknown>,
-  options = {}
-) =>
-  pMemoize(rpc, {
-    cache,
-    maxAge: 6000, // Half block time: ~6 sec.
-    resolver: (method: string, params: unknown[]) => getKey(method, params),
-    ...options
-  })
-
 export const perBlockStrategy: Strategy = {
-  getRpc,
+  maxAge: 6000, // Half block time: ~6 sec.
   methods,
-  name
+  name: 'block'
 }
