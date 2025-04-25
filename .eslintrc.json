@@ -1,0 +1,14 @@
+{
+  "extends": ["bloq", "prettier"],
+  "ignorePatterns": "packages/*/dist/*",
+  "overrides": [
+    {
+      "extends": ["bloq/typescript", "prettier"],
+      "files": ["packages/**/*.ts"]
+    },
+    {
+      "extends": ["bloq/vitest"],
+      "files": ["*.{spec,test}.{js,ts}"]
+    }
+  ]
+}

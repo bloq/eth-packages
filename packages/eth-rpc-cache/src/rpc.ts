@@ -32,7 +32,7 @@ export const createEthRpcCache = function (
   // Index all caches into the object by strategy name
   const cachesByStrategy = strategies
     .filter(({ maxAge }) => maxAge !== undefined)
-    .map(({ name, maxAge }) => ({
+    .map(({ maxAge, name }) => ({
       [name]: pMemoize(rpc, {
         cache,
         maxAge,
