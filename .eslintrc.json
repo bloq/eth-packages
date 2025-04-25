@@ -10,5 +10,8 @@
       "extends": ["bloq/vitest"],
       "files": ["*.{spec,test}.{js,ts}"]
     }
-  ]
+  ],
+  "parserOptions": {
+    "sourceType": "module"
+  }
 }
