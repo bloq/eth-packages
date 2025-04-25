@@ -30,12 +30,11 @@
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "tsc",
-    "test": "mocha -r ts-node/register --loader=ts-node/esm --es-module-specifier-resolution=node"
+    "test": "vitest run"
   },
   "devDependencies": {
     "@types/debug": "4.1.12",
     "@types/json-stable-stringify": "1.0.36",
-    "ts-node": "10.9.2",
     "typescript": "5.4.5",
     "viem": "2.13.2"
   },
