@@ -7,7 +7,7 @@
       "files": ["packages/**/*.ts"]
     },
     {
-      "extends": ["bloq/vitest"],
+      "extends": ["bloq/vitest", "prettier"],
       "files": ["*.{spec,test}.{js,ts}"]
     }
   ],
