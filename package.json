@@ -26,13 +26,5 @@
   },
   "workspaces": [
     "packages/*"
-  ],
-  "prettier": {
-    "arrowParens": "avoid",
-    "quoteProps": "consistent",
-    "semi": false,
-    "singleQuote": true,
-    "tabWidth": 2,
-    "trailingComma": "none"
-  }
+  ]
 }
