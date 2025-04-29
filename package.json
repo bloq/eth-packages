@@ -2,9 +2,10 @@
   "name": "eth-packages",
   "license": "MIT",
   "scripts": {
-    "format:check": "prettier --check .",
     "deps:check": "knip",
+    "format:check": "prettier --check .",
     "lint": "eslint --cache .",
+    "prepare": "husky",
     "test": "npx lerna run test --concurrency 1 --stream",
     "test:changed": "npm run test -- --since master"
   },
@@ -12,9 +13,12 @@
     "lerna": "^7.0.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.0",
+    "better-sort-package-json": "^1.1.1",
+    "commitlint-config-bloq": "^1.1.0",
     "eslint": "^8.57.0",
     "eslint-config-bloq": "^4.5.0",
-    "husky": "^4.3.8",
+    "husky": "^9.1.7",
     "knip": "^5.50.5",
     "lint-staged": "^13.2.2",
     "prettier": "^3.2.5",
@@ -23,15 +27,6 @@
   "workspaces": [
     "packages/*"
   ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.js": "eslint --cache --fix",
-    "*.{css,js,json,md,ts,tsx,yml}": "prettier --write"
-  },
   "prettier": {
     "arrowParens": "avoid",
     "quoteProps": "consistent",
