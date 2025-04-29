@@ -1,4 +1,4 @@
-export class JsonRpcError extends Error {
+class JsonRpcError extends Error {
   constructor(
     message: string,
     public code: number

@@ -1,9 +1,5 @@
-import * as chai from 'chai'
-import chaiAsPromised from 'chai-as-promised'
-import sinon from 'sinon'
 import { keccak256 } from 'viem'
-
-chai.use(chaiAsPromised).should()
+import { describe, expect, it, vi } from 'vitest'
 
 import { errors } from '../src/error'
 import { createEthRpcCache } from '../src/index'
@@ -18,36 +14,36 @@ const getJsonResponse = result =>
   })
 
 describe('Ethereum RPC Cache', function () {
-  it('should reject unsupported methods', function () {
+  it('should reject unsupported methods', async function () {
     const cachedRpc = createEthRpcCache(() => getJsonResponse('0x123'), {
       allowOthers: false
     })
-    return cachedRpc('unsupported', []).should.be.rejectedWith(
+    await expect(cachedRpc('unsupported', [])).rejects.toThrow(
       'Method not found'
     )
   })
 
-  it('should reject if the RPC call fails', function () {
+  it('should reject if the RPC call fails', async function () {
     const mockRpc = function () {
       throw errors.internalServerError(new Error())
     }
     const ethRpc = createEthRpcCache(mockRpc)
-    return ethRpc('test', []).should.be.rejectedWith('Internal error')
+    await expect(ethRpc('test', [])).rejects.toThrow('Internal error')
   })
 
   it('should execute any unknown method', async function () {
     const testMethod = 'join'
     const testParams = [1, 2]
     const mockRpc = function (method, params) {
-      method.should.equal(testMethod)
-      params.should.deep.equal(testParams)
+      expect(method).toBe(testMethod)
+      expect(params).toEqual(testParams)
       return getJsonResponse(testParams.join())
     }
 
     const ethRpc = createEthRpcCache(mockRpc)
     const response = await ethRpc(testMethod, testParams)
 
-    response.should.eql({
+    expect(response).toEqual({
       id: 1,
       jsonrpc: '2.0',
       result: testParams.join()
@@ -65,11 +61,11 @@ describe('Ethereum RPC Cache', function () {
     ]
     const testResult = '0x1'
     const mockRpc = function (method, params) {
-      method.should.equal(testMethod)
-      params.should.deep.equal(testParams)
+      expect(method).toBe(testMethod)
+      expect(params).toEqual(testParams)
       return getJsonResponse(testResult)
     }
-    const spied = sinon.spy(mockRpc)
+    const spied = vi.fn(mockRpc)
 
     const indexed = [
       { method: 'decimals()', policy: 'permanent' },
@@ -96,17 +92,17 @@ describe('Ethereum RPC Cache', function () {
     // call again to ensure the cached version was used
     await ethRpc(testMethod, testParams)
 
-    response.should.eql({
+    expect(response).toEqual({
       id: 1,
       jsonrpc: '2.0',
       result: testResult
     })
-    spied.calledOnce.should.be.true
+    expect(spied.mock.calls.length).toBe(1)
   })
 
   it('should cache permanent methods', async function () {
     const chainId = '0x1'
-    const rpc = sinon.fake.resolves(getJsonResponse(chainId))
+    const rpc = vi.fn().mockResolvedValue(getJsonResponse(chainId))
     const ethRpc = createEthRpcCache(rpc)
 
     const chainIds = await Promise.all([
@@ -114,14 +110,14 @@ describe('Ethereum RPC Cache', function () {
       ethRpc('eth_chainId', [])
     ])
 
-    chainIds.forEach(c => c.result.should.equal(chainId))
-    rpc.calledOnce.should.be.true
+    chainIds.forEach(c => expect(c.result).toBe(chainId))
+    expect(rpc.mock.calls.length).toBe(1)
   })
 
   it('should cache per-block methods', async function () {
-    const clock = sinon.useFakeTimers()
+    const clock = vi.useFakeTimers()
     const blockNumber = '0x12'
-    const mockRpc = sinon.fake.resolves(getJsonResponse(blockNumber))
+    const mockRpc = vi.fn().mockResolvedValue(getJsonResponse(blockNumber))
     const ethRpc = createEthRpcCache(mockRpc)
 
     const blockNumbers = await Promise.all([
@@ -129,14 +125,14 @@ describe('Ethereum RPC Cache', function () {
       ethRpc('eth_blockNumber', [])
     ])
 
-    blockNumbers.forEach(({ result }) => result.should.equal(blockNumber))
-    mockRpc.calledOnce.should.be.true
-    clock.tick(10000)
+    blockNumbers.forEach(({ result }) => expect(result).toBe(blockNumber))
+    expect(mockRpc.mock.calls.length).toBe(1)
+    clock.advanceTimersByTime(10000)
     const latestBlockNumber = await ethRpc('eth_blockNumber', [])
 
-    latestBlockNumber.result.should.equal(blockNumber)
-    mockRpc.calledTwice.should.be.true
+    expect(latestBlockNumber.result).toBe(blockNumber)
+    expect(mockRpc.mock.calls.length).toBe(2)
 
-    clock.restore()
+    clock.useRealTimers()
   })
 })

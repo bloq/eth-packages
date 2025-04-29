@@ -3,6 +3,7 @@
   "license": "MIT",
   "scripts": {
     "format:check": "prettier --check .",
+    "deps:check": "knip",
     "lint": "eslint --cache .",
     "test": "npx lerna run test --concurrency 1 --stream",
     "test:changed": "npm run test -- --since master"
@@ -11,58 +12,17 @@
     "lerna": "^7.0.2"
   },
   "devDependencies": {
-    "@types/chai-as-promised": "7.1.8",
-    "@types/mocha": "10.0.6",
-    "@types/sinon": "17.0.3",
-    "@typescript-eslint/eslint-plugin": "7.8.0",
-    "@typescript-eslint/parser": "7.8.0",
-    "chai": "4.4.1",
-    "chai-as-promised": "7.1.1",
-    "eslint": "^8.43.0",
-    "eslint-config-bloq": "^4.0.2",
+    "eslint": "^8.57.0",
+    "eslint-config-bloq": "^4.5.0",
     "husky": "^4.3.8",
+    "knip": "^5.50.5",
     "lint-staged": "^13.2.2",
-    "mocha": "10.4.0",
     "prettier": "^3.2.5",
-    "sinon": "17.0.1"
+    "vitest": "3.0.8"
   },
   "workspaces": [
     "packages/*"
   ],
-  "eslintConfig": {
-    "extends": [
-      "bloq",
-      "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended",
-      "prettier"
-    ],
-    "ignorePatterns": "packages/*/dist/*",
-    "overrides": [
-      {
-        "files": [
-          "*.spec.js"
-        ],
-        "extends": [
-          "bloq/mocha",
-          "prettier"
-        ],
-        "globals": {
-          "after": "readonly",
-          "before": "readonly",
-          "describe": "readonly",
-          "it": "readonly"
-        },
-        "rules": {
-          "node/no-unpublished-require": "off"
-        }
-      }
-    ],
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint"
-    ],
-    "root": true
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
