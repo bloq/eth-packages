@@ -6,7 +6,6 @@ import { perBlockStrategy } from './strategies/per-block'
 import { permanentStrategy } from './strategies/permanent'
 import { type JsonRpcCallFn, type Strategy } from './types'
 import { getKey } from './utils/cache-key'
-import { clone } from './utils/clone'
 
 const debug = debugConstructor('eth-rpc-cache')
 
@@ -64,7 +63,10 @@ export const createEthRpcCache = function (
     try {
       const strategyName = strategyResolver[method]?.(method, params)
       if (strategyName) {
-        return cachesByStrategy[strategyName](method, params).then(clone)
+        return cachesByStrategy[strategyName](method, params).then(c =>
+          // can't inline on .then(structuredClone), TS fails to infer
+          structuredClone(c)
+        )
       }
       if (allowOthers) {
         // not configured to be cached, call the method directly
