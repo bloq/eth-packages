@@ -1,6 +1,6 @@
 # eth-rpc-cache
 
-![NPM Version](https://img.shields.io/npm/v/eth-rpc-cache)
+![NPM Version](https://img.shields.io/npm/v/eth-rpc-cache)![npm bundle size](https://img.shields.io/bundlephobia/minzip/eth-rpc-cache)
 
 A simple cache for Ethereum RPC requests extensible with different caching strategies.
 
