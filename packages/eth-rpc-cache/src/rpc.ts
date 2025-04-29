@@ -1,4 +1,3 @@
-import debugConstructor from 'debug'
 import pMemoize from 'promise-mem'
 
 import { errors } from './error'
@@ -6,8 +5,6 @@ import { perBlockStrategy } from './strategies/per-block'
 import { permanentStrategy } from './strategies/permanent'
 import { type JsonRpcCallFn, type Strategy } from './types'
 import { getKey } from './utils/cache-key'
-
-const debug = debugConstructor('eth-rpc-cache')
 
 type Options = {
   allowOthers?: boolean
@@ -19,8 +16,6 @@ export const createEthRpcCache = function (
   rpc: JsonRpcCallFn,
   options: Options = {}
 ): JsonRpcCallFn {
-  debug('Creating EVM RPC cache')
-
   const {
     allowOthers = true,
     cache = new Map(),
