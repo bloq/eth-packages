@@ -1,42 +1,40 @@
 {
   "name": "eth-rpc-cache",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A simple cache for Ethereum RPC requests extensible with different caching strategies",
   "keywords": [
     "cache",
     "eth",
     "rpc"
   ],
+  "bugs": "https://github.com/bloq/eth-packages/issues",
+  "license": "MIT",
+  "author": {
+    "email": "gonzalo@bloq.com",
+    "name": "Gonzalo D'Elia"
+  },
   "files": [
     "dist",
     "src"
   ],
   "main": "dist/index.js",
-  "bugs": "https://github.com/bloq/eth-packages/issues",
-  "license": "MIT",
-  "author": {
-    "name": "Gonzalo D'Elia",
-    "email": "gonzalo@bloq.com"
-  },
-  "dependencies": {
-    "debug": "4.3.4",
-    "json-stable-stringify": "1.0.1",
-    "promise-mem": "1.0.2"
-  },
-  "engines": {
-    "node": ">=16"
-  },
   "repository": "bloq/eth-packages",
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "tsc",
     "test": "vitest run"
   },
+  "dependencies": {
+    "json-stable-stringify": "1.0.1",
+    "promise-mem": "1.0.2"
+  },
   "devDependencies": {
-    "@types/debug": "4.1.12",
     "@types/json-stable-stringify": "1.0.36",
     "typescript": "5.4.5",
     "viem": "2.13.2"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "type": "module",
   "types": "dist/index.d.ts"

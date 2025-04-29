@@ -1,4 +1,3 @@
-import debugConstructor from 'debug'
 import pMemoize from 'promise-mem'
 
 import { errors } from './error'
@@ -6,9 +5,6 @@ import { perBlockStrategy } from './strategies/per-block'
 import { permanentStrategy } from './strategies/permanent'
 import { type JsonRpcCallFn, type Strategy } from './types'
 import { getKey } from './utils/cache-key'
-import { clone } from './utils/clone'
-
-const debug = debugConstructor('eth-rpc-cache')
 
 type Options = {
   allowOthers?: boolean
@@ -20,8 +16,6 @@ export const createEthRpcCache = function (
   rpc: JsonRpcCallFn,
   options: Options = {}
 ): JsonRpcCallFn {
-  debug('Creating EVM RPC cache')
-
   const {
     allowOthers = true,
     cache = new Map(),
@@ -64,7 +58,10 @@ export const createEthRpcCache = function (
     try {
       const strategyName = strategyResolver[method]?.(method, params)
       if (strategyName) {
-        return cachesByStrategy[strategyName](method, params).then(clone)
+        return cachesByStrategy[strategyName](method, params).then(c =>
+          // can't inline on .then(structuredClone), TS fails to infer
+          structuredClone(c)
+        )
       }
       if (allowOthers) {
         // not configured to be cached, call the method directly
