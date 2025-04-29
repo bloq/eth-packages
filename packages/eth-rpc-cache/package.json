@@ -34,7 +34,7 @@
     "viem": "2.13.2"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "type": "module",
   "types": "dist/index.d.ts"
